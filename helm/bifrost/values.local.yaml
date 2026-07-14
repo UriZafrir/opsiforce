@@ -1,205 +1,206 @@
-service:
-  type: ClusterIP
-
-fullnameOverride: opsiforce-bifrost
-
-image:
-  tag: "v1.5.3"
-
-replicaCount: 1
-
-resources:
-  requests:
-    cpu: 100m
-    memory: 256Mi
-  limits:
-    memory: 512Mi
-
-storage:
-  mode: postgres
-  configStore:
-    enabled: true
-  logsStore:
-    enabled: true
-
-vectorStore:
-  enabled: false
-  type: none
-
-postgresql:
-  enabled: false
-  external:
-    enabled: true
-    host: local-pg-postgresql.local.svc.cluster.local
-    port: 5432
-    user: admin
-    database: bifrost
-    sslMode: disable
-    existingSecret: opsiforce-bifrost-postgres
-    passwordKey: password
-
 bifrost:
-  encryptionKeySecret:
-    name: opsiforce-bifrost-encryption
-    key: key
-  authConfig:
-    isEnabled: true
-    disableAuthOnInference: true
-    existingSecret: opsiforce-bifrost-admin-auth
-    usernameKey: username
-    passwordKey: password
-  client:
-    enableLogging: true
-    logRetentionDays: 7
-    allowDirectKeys: false
-  providers:
-    openai:
-      keys:
-        - name: openai-primary
-          value: env.OPENAI_API_KEY
-          weight: 1
-          models: ["*"]
-      network_config:
-        default_request_timeout_in_seconds: 1200
-        max_retries: 2
-        retry_backoff_initial_ms: 500
-        retry_backoff_max_ms: 5000
-        stream_idle_timeout_in_seconds: 1200
-    anthropic:
-      keys:
-        - name: anthropic-primary
-          value: env.ANTHROPIC_API_KEY
-          weight: 1
-          models: ["*"]
-      network_config:
-        default_request_timeout_in_seconds: 1200
-        max_retries: 2
-        retry_backoff_initial_ms: 500
-        retry_backoff_max_ms: 5000
-        stream_idle_timeout_in_seconds: 1200
-    custom-openai-1:
-      keys:
-        - name: placeholder
-          value: ""
-          weight: 1
-          models:
-            - gpt-5.5
-            - gpt-5.4
-            - gpt-5.4-mini
-            - gpt-5.3-codex
-            - gpt-5.3-codex-spark
-            - gpt-5.2
-            - codex-auto-review
-      network_config:
-        base_url: "http://host.minikube.internal:8455"
-        default_request_timeout_in_seconds: 1200
-        max_retries: 2
-        retry_backoff_initial_ms: 500
-        retry_backoff_max_ms: 5000
-        stream_idle_timeout_in_seconds: 1200
-      custom_provider_config:
-        is_key_less: true
-        base_provider_type: openai
-        allowed_requests:
-          list_models: true
-          text_completion: true
-          text_completion_stream: true
-          chat_completion: true
-          chat_completion_stream: true
-          responses: false
-          responses_stream: true
-          embedding: false
-          speech: false
-          speech_stream: false
-          transcription: false
-          transcription_stream: false
-          image_generation: false
-          image_generation_stream: false
-          image_edit: false
-          image_edit_stream: false
-          image_variation: false
-          count_tokens: true
-    custom-openai-2:
-      keys:
-        - name: placeholder
-          value: ""
-          weight: 1
-          models: ["*"]
-      network_config:
-        base_url: "http://host.minikube.internal:8455"
-        default_request_timeout_in_seconds: 1200
-        max_retries: 2
-        retry_backoff_initial_ms: 500
-        retry_backoff_max_ms: 5000
-        stream_idle_timeout_in_seconds: 1200
-      custom_provider_config:
-        is_key_less: true
-        base_provider_type: openai
-        allowed_requests:
-          list_models: true
-          text_completion: true
-          text_completion_stream: true
-          chat_completion: true
-          chat_completion_stream: true
-          responses: false
-          responses_stream: true
-          embedding: false
-          speech: false
-          speech_stream: false
-          transcription: false
-          transcription_stream: false
-          image_generation: false
-          image_generation_stream: false
-          image_edit: false
-          image_edit_stream: false
-          image_variation: false
-          count_tokens: true
-    custom-openai-3:
-      keys:
-        - name: placeholder
-          value: ""
-          weight: 1
-          models: ["*"]
-      network_config:
-        base_url: "http://host.minikube.internal:8455"
-        default_request_timeout_in_seconds: 1200
-        max_retries: 2
-        retry_backoff_initial_ms: 500
-        retry_backoff_max_ms: 5000
-        stream_idle_timeout_in_seconds: 1200
-      custom_provider_config:
-        is_key_less: true
-        base_provider_type: openai
-        allowed_requests:
-          list_models: true
-          text_completion: true
-          text_completion_stream: true
-          chat_completion: true
-          chat_completion_stream: true
-          responses: false
-          responses_stream: true
-          embedding: false
-          speech: false
-          speech_stream: false
-          transcription: false
-          transcription_stream: false
-          image_generation: false
-          image_generation_stream: false
-          image_edit: false
-          image_edit_stream: false
-          image_variation: false
-          count_tokens: true
-  providerSecrets:
-    openai:
-      existingSecret: opsiforce-bifrost-provider-keys
-      key: openai-api-key
-      envVar: OPENAI_API_KEY
-    anthropic:
-      existingSecret: opsiforce-bifrost-provider-keys
-      key: anthropic-api-key
-      envVar: ANTHROPIC_API_KEY
-  plugins:
-    governance:
+  service:
+    type: ClusterIP
+
+  fullnameOverride: opsiforce-bifrost
+
+  image:
+    tag: "v1.5.3"
+
+  replicaCount: 1
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
+
+  storage:
+    mode: postgres
+    configStore:
       enabled: true
-    logging:
+    logsStore:
       enabled: true
+
+  vectorStore:
+    enabled: false
+    type: none
+
+  postgresql:
+    enabled: false
+    external:
+      enabled: true
+      host: local-pg-postgresql.local.svc.cluster.local
+      port: 5432
+      user: admin
+      database: bifrost
+      sslMode: disable
+      existingSecret: opsiforce-bifrost-postgres
+      passwordKey: password
+
+  bifrost:
+    encryptionKeySecret:
+      name: opsiforce-bifrost-encryption
+      key: key
+    authConfig:
+      isEnabled: true
+      disableAuthOnInference: true
+      existingSecret: opsiforce-bifrost-admin-auth
+      usernameKey: username
+      passwordKey: password
+    client:
+      enableLogging: true
+      logRetentionDays: 7
+      allowDirectKeys: false
+    providers:
+      openai:
+        keys:
+          - name: openai-primary
+            value: env.OPENAI_API_KEY
+            weight: 1
+            models: ["*"]
+        network_config:
+          default_request_timeout_in_seconds: 1200
+          max_retries: 2
+          retry_backoff_initial_ms: 500
+          retry_backoff_max_ms: 5000
+          stream_idle_timeout_in_seconds: 1200
+      anthropic:
+        keys:
+          - name: anthropic-primary
+            value: env.ANTHROPIC_API_KEY
+            weight: 1
+            models: ["*"]
+        network_config:
+          default_request_timeout_in_seconds: 1200
+          max_retries: 2
+          retry_backoff_initial_ms: 500
+          retry_backoff_max_ms: 5000
+          stream_idle_timeout_in_seconds: 1200
+      custom-openai-1:
+        keys:
+          - name: placeholder
+            value: ""
+            weight: 1
+            models:
+              - gpt-5.5
+              - gpt-5.4
+              - gpt-5.4-mini
+              - gpt-5.3-codex
+              - gpt-5.3-codex-spark
+              - gpt-5.2
+              - codex-auto-review
+        network_config:
+          base_url: "http://host.minikube.internal:8455"
+          default_request_timeout_in_seconds: 1200
+          max_retries: 2
+          retry_backoff_initial_ms: 500
+          retry_backoff_max_ms: 5000
+          stream_idle_timeout_in_seconds: 1200
+        custom_provider_config:
+          is_key_less: true
+          base_provider_type: openai
+          allowed_requests:
+            list_models: true
+            text_completion: true
+            text_completion_stream: true
+            chat_completion: true
+            chat_completion_stream: true
+            responses: false
+            responses_stream: true
+            embedding: false
+            speech: false
+            speech_stream: false
+            transcription: false
+            transcription_stream: false
+            image_generation: false
+            image_generation_stream: false
+            image_edit: false
+            image_edit_stream: false
+            image_variation: false
+            count_tokens: true
+      custom-openai-2:
+        keys:
+          - name: placeholder
+            value: ""
+            weight: 1
+            models: ["*"]
+        network_config:
+          base_url: "http://host.minikube.internal:8455"
+          default_request_timeout_in_seconds: 1200
+          max_retries: 2
+          retry_backoff_initial_ms: 500
+          retry_backoff_max_ms: 5000
+          stream_idle_timeout_in_seconds: 1200
+        custom_provider_config:
+          is_key_less: true
+          base_provider_type: openai
+          allowed_requests:
+            list_models: true
+            text_completion: true
+            text_completion_stream: true
+            chat_completion: true
+            chat_completion_stream: true
+            responses: false
+            responses_stream: true
+            embedding: false
+            speech: false
+            speech_stream: false
+            transcription: false
+            transcription_stream: false
+            image_generation: false
+            image_generation_stream: false
+            image_edit: false
+            image_edit_stream: false
+            image_variation: false
+            count_tokens: true
+      custom-openai-3:
+        keys:
+          - name: placeholder
+            value: ""
+            weight: 1
+            models: ["*"]
+        network_config:
+          base_url: "http://host.minikube.internal:8455"
+          default_request_timeout_in_seconds: 1200
+          max_retries: 2
+          retry_backoff_initial_ms: 500
+          retry_backoff_max_ms: 5000
+          stream_idle_timeout_in_seconds: 1200
+        custom_provider_config:
+          is_key_less: true
+          base_provider_type: openai
+          allowed_requests:
+            list_models: true
+            text_completion: true
+            text_completion_stream: true
+            chat_completion: true
+            chat_completion_stream: true
+            responses: false
+            responses_stream: true
+            embedding: false
+            speech: false
+            speech_stream: false
+            transcription: false
+            transcription_stream: false
+            image_generation: false
+            image_generation_stream: false
+            image_edit: false
+            image_edit_stream: false
+            image_variation: false
+            count_tokens: true
+    providerSecrets:
+      openai:
+        existingSecret: opsiforce-bifrost-provider-keys
+        key: openai-api-key
+        envVar: OPENAI_API_KEY
+      anthropic:
+        existingSecret: opsiforce-bifrost-provider-keys
+        key: anthropic-api-key
+        envVar: ANTHROPIC_API_KEY
+    plugins:
+      governance:
+        enabled: true
+      logging:
+        enabled: true

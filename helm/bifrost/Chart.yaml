@@ -1,0 +1,11 @@
+apiVersion: v2
+name: opsiforce-bifrost
+description: Bifrost AI gateway (wraps upstream chart)
+type: application
+version: 0.1.0
+appVersion: "1.5.3"
+
+dependencies:
+  - name: bifrost
+    version: 2.1.26
+    repository: https://maximhq.github.io/bifrost/helm-charts

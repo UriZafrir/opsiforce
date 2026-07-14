@@ -1,0 +1,6 @@
+dependencies:
+- name: bifrost
+  repository: https://maximhq.github.io/bifrost/helm-charts
+  version: 2.1.26
+digest: sha256:f7ef3b140431b242d412718396af61fead8654197ec27389edb27818d045c20c
+generated: "2026-07-14T10:57:38.338529137+03:00"
