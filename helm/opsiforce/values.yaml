@@ -6,7 +6,6 @@ imagePullSecrets:
 
 storage:
   type: pvc
-  pvcName: opsiforce-cephfs
   className: ""
   size: 200Gi
   hostPath: /tmp/opsiforce-data
